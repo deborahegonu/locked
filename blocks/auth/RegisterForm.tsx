@@ -15,6 +15,7 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { RegisterFormSchema } from "@/schemas"
+import GoogleLogin from "./GoogleLogin"
 
 
 export default function RegisterForm() {
@@ -35,7 +36,8 @@ export default function RegisterForm() {
   }
 
   return (
-    <Form {...form}>
+    <>
+        <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
         <FormField
           control={form.control}
@@ -77,7 +79,11 @@ export default function RegisterForm() {
           )}
         />
         <Button type="submit" className="w-full">Create Account</Button>
+        
       </form>
     </Form>
+    <GoogleLogin />
+    </>
+    
   )
 }
