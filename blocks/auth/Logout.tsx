@@ -10,7 +10,7 @@ export default function LogOut() {
     const [errorMsg, dispatchLogOut] = useActionState(handleLogOut, undefined)
   return (
     <form action={dispatchLogOut}>
-      <Button variant={'destructive'} type="submit">Log out</Button>
+      <Button variant={'ghost'} type="submit" className="text-destructive hover:text-destructive">Log out</Button>
       <p>{errorMsg || null}</p>
     </form>
   )

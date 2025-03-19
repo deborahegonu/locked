@@ -16,9 +16,15 @@ import {
 import { Input } from "@/components/ui/input"
 import { RegisterFormSchema } from "@/schemas"
 import GoogleLogin from "./GoogleLogin"
-
+import { toast } from "sonner"
+import { register } from "@/actions/register"
+import {LuLoaderCircle} from "react-icons/lu"
+import { useState } from "react"
+import { useRouter } from "next/navigation"
 
 export default function RegisterForm() {
+    const [loading, setLoading] = useState<boolean>(false)
+    const router = useRouter();
   const form = useForm<z.infer<typeof RegisterFormSchema>>({
     resolver: zodResolver(RegisterFormSchema),
     defaultValues: {
@@ -28,11 +34,27 @@ export default function RegisterForm() {
     },
   })
  
-  // 2. Define a submit handler.
-  function onSubmit(values: z.infer<typeof RegisterFormSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(values)
+  function onSubmit(data: z.infer<typeof RegisterFormSchema>) {
+    
+    setLoading(true)
+    register(data).then((response) => {
+        if(response.error) {
+
+          toast.error(response.error)
+          setLoading(false)
+        } 
+  
+        if(response.success) {
+          toast.success(response.success)
+          setLoading(false)
+          setTimeout(() => {
+            router.push('/auth/verify')
+          }, 500)
+          
+        }
+        setLoading(false)
+      })
+ 
   }
 
   return (
@@ -78,8 +100,9 @@ export default function RegisterForm() {
             </FormItem>
           )}
         />
-        <Button type="submit" className="w-full">Create Account</Button>
-        
+        <Button disabled={loading} type="submit" className="w-full flex items-center space-x-3">
+            {loading ? <><LuLoaderCircle /> <span>Processing</span></> : 'Create Account'}
+        </Button>
       </form>
     </Form>
     <GoogleLogin />

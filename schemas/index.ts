@@ -25,3 +25,7 @@ export const LoginFormSchema = z.object({
     password: z.string()
     .min(1, "Password is required.").min(8, 'Password must have at least 8 characters.'),
   })
+
+export const OTPSchema = z.object({
+  pin: z.string().min(1, 'One Time Password is required.').max(6, 'OTP must have only 6 characters.'),
+})
